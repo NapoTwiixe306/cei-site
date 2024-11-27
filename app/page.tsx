@@ -3,17 +3,16 @@ import { useEffect } from "react";
 import Navbar from "@/src/components/Navbar";
 import Link from "next/link";
 import Image from "next/image";
-import LogoWhite from "@/src/img/cei-logo-header.png";
-import LogoBlack from "@/src/img/cei_logo_sansfond.svg";
+import LogoWhite from "@/src/img/LogoWhite.svg";
+import LogoBlack from "@/src/img/LogoBlack.svg";
 import { gsap } from "gsap"; // Import GSAP
 import { FaFacebook, FaInstagram } from "react-icons/fa";
 export default function Home() {
   useEffect(() => {
-    // GSAP animations for page elements
     gsap.fromTo(
       ".hero-title",
-      { opacity: 0, y: -50 }, // Starting state
-      { opacity: 1, y: 0, duration: 1, ease: "power3.out" } // Ending state
+      { opacity: 0, y: -50 },
+      { opacity: 1, y: 0, duration: 1, ease: "power3.out" }
     );
 
     gsap.fromTo(
@@ -50,7 +49,7 @@ export default function Home() {
   return (
     <>
       <Navbar />
-      <div className="bg-white dark:bg-gray-900 min-h-screen flex flex-col justify-center items-center">
+      <div className="bg-white dark:bg-gray-800 min-h-screen flex flex-col justify-center items-center">
         {/* Section principale */}
         <div className="flex flex-col items-center text-center px-4 py-10">
           <h1 className="hero-title text-black dark:text-white text-3xl sm:text-5xl font-bold">
@@ -76,18 +75,19 @@ export default function Home() {
         </div>
 
         {/* Section "Qui sommes-nous" */}
-        <div className="flex flex-col lg:flex-row justify-between items-center gap-10 px-4 lg:px-20 py-10 w-full mt-16 sm:mt-24 md:mt-32">
+        <div className="flex flex-col lg:flex-row justify-between items-center gap-10 px-4 lg:px-20 py-10 w-full mt-8 sm:mt-16 md:mt-8">
           <div className="lg:w-1/2">
             <h2 className="section-title text-black dark:text-white text-2xl sm:text-4xl font-bold">
               Qui sommes-nous
             </h2>
-            <p className="section-text text-black dark:text-white mt-4 text-base sm:text-lg">
+            <p className="section-text indent-4 text-black dark:text-white mt-4 text-base sm:text-lg">
               Le Cercle Étudiant en Informatique <span className="font-bold">(CEI)</span> est une association
-              étudiante dédiée aux étudiants en informatique. Notre mission est de
-              créer une communauté dynamique et enrichissante pour tous les passionnés
-              d&#39;informatique.
+              étudiante dédiée aux étudiants en informatique. <br/>
             </p>
-            <p className="section-text text-black dark:text-white mt-4 text-base sm:text-lg">
+            <p className="section-text indent-4 text-black dark:text-white">Notre mission est de
+              créer une communauté dynamique et enrichissante pour tous les passionnés
+              d&#39;informatique.</p>
+            <p className="section-text indent-4 text-black dark:text-white mt-4 text-base sm:text-lg">
               Nous organisons régulièrement des événements, des sessions de tutorat
               et des activités pour favoriser l&#39;apprentissage et les échanges
               entre étudiants.
@@ -104,7 +104,7 @@ export default function Home() {
         </div>
 
         {/* Section Newsletter */}
-        <div className="text-black dark:text-white w-full py-12 mt-16">
+        <div className="text-black dark:text-white w-full py-12">
           <div className="flex flex-col items-center px-4">
             <h3 className="text-3xl font-bold mb-4">Abonnez-vous à notre newsletter</h3>
             <p className="text-lg mb-6">Restez à jour avec nos événements et nos activités.</p>
@@ -131,10 +131,10 @@ export default function Home() {
             <p>&copy; 2024 Cercle des Étudiants en Informatique. Tous droits réservés.</p>
           </div>
           <div className="flex justify-center items-center space-x-8">
-            <Link href="https://facebook.com" target="_blank">
+            <Link href="https://www.facebook.com/CEI.HELMo" target="_blank">
               <FaFacebook className="w-6 h-6 text-blue-600 hover:text-blue-800 transition duration-200" />
             </Link>
-            <Link href="https://instagram.com" target="_blank">
+            <Link href="https://www.instagram.com/CEI.HELMo/" target="_blank">
               <FaInstagram className="w-6 h-6 text-pink-600 hover:text-pink-800 transition duration-200" />
             </Link>
           </div>

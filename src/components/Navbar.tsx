@@ -3,8 +3,8 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { FaBars, FaTimes, FaMoon, FaSun } from "react-icons/fa";
-import LogoBlack from "@/src/img/cei_logo_sansfond.svg";
-import LogoWhite from "@/src/img/cei-logo-header.png";
+import LogoBlack from "@/src/img/LogoBlack.svg";
+import LogoWhite from "@/src/img/LogoWhite.svg";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -39,8 +39,10 @@ export default function Navbar() {
     setIsMenuOpen(!isMenuOpen);
   };
 
-  return (
-    <nav className="bg-white dark:bg-gray-900 shadow-2xl">
+  return  (
+    <nav
+      className={`bg-gray-100 dark:bg-gray-900 ${isDarkMode ? "shadow-lg shadow-black" : "shadow-lg shadow-white"}`}
+    >
       <div className="px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
