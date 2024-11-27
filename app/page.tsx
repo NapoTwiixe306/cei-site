@@ -84,9 +84,10 @@ export default function Home() {
               Le Cercle Étudiant en Informatique <span className="font-bold">(CEI)</span> est une association
               étudiante dédiée aux étudiants en informatique. <br/>
             </p>
-            <p className="section-text indent-4 text-black dark:text-white">Notre mission est de
-              créer une communauté dynamique et enrichissante pour tous les passionnés
-              d&#39;informatique.</p>
+            <p className="section-text indent-4 text-black dark:text-white mt-4 text-base sm:text-lg">
+              Notre mission est de créer une communauté dynamique et enrichissante pour tous les passionnés
+              d&#39;informatique.
+            </p>
             <p className="section-text indent-4 text-black dark:text-white mt-4 text-base sm:text-lg">
               Nous organisons régulièrement des événements, des sessions de tutorat
               et des activités pour favoriser l&#39;apprentissage et les échanges
@@ -134,7 +135,7 @@ export default function Home() {
             <Link href="https://www.facebook.com/CEI.HELMo" target="_blank">
               <FaFacebook className="w-6 h-6 text-blue-600 hover:text-blue-800 transition duration-200" />
             </Link>
-            <Link href="https://www.instagram.com/CEI.HELMo/" target="_blank">
+            <Link href="https://www.instagram.com/cei.helmo/" target="_blank">
               <FaInstagram className="w-6 h-6 text-pink-600 hover:text-pink-800 transition duration-200" />
             </Link>
           </div>
