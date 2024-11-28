@@ -42,7 +42,7 @@ export default function Mentorat() {
         <div className="left w-full md:w-1/2 p-4">
           <div>
             <h1 className="font-bold text-3xl md:text-5xl text-black dark:text-white text-center md:text-left">
-              Programme de Mentorat
+              Programme de Tutorat
             </h1>
             <p className="text-lg md:text-xl mt-3 text-gray-400 text-center md:text-left">
               Obtenez de l&#39;aide d&#39;étudiants expérimentés ou devenez
@@ -76,7 +76,7 @@ export default function Mentorat() {
               Inscrivez-vous maintenant!
             </h1>
             <p className="text-md mt-3 text-gray-400 text-center md:text-left">
-              Choisissez votre rôle dans le programme de mentorat
+              Choisissez votre rôle dans le programme de Tutorat
             </p>
           </div>
           <div className="p-6">
@@ -177,7 +177,7 @@ export default function Mentorat() {
             </form>
             <p className="mt-4 text-xs text-gray-500 text-center">
               Vos données ne seront pas partagées et seront uniquement utilisées
-              pour le programme de mentorat
+              pour le programme de Tutorat
             </p>
           </div>
         </div>
