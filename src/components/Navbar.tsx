@@ -39,10 +39,8 @@ export default function Navbar() {
     setIsMenuOpen(!isMenuOpen);
   };
 
-  return  (
-    <nav
-      className={`bg-gray-100 dark:bg-gray-900 ${isDarkMode ? "shadow-lg shadow-black" : "shadow-lg shadow-white"}`}
-    >
+  return (
+    <nav className="bg-gray-100 dark:bg-gray-900">
       <div className="px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
@@ -60,14 +58,14 @@ export default function Navbar() {
           </div>
           <div className="hidden md:flex space-x-6">
             <Link
-              href="/tutorat"
-              className="text-gray-800 text-lg dark:text-gray-200 hover:text-blue-500 dark:hover:text-blue-400 font-bold"
+              href="/pages/Mentorat"
+              className="text-gray-800 text-lg dark:text-gray-200 transition hover:text-blue-500 dark:hover:text-blue-400 font-bold"
             >
-              Tutorat
+              Mentorat
             </Link>
             <Link
               href="/evenements"
-              className="text-gray-800 text-lg dark:text-gray-200 hover:text-blue-500 dark:hover:text-blue-400 font-bold"
+              className="text-gray-800 text-lg dark:text-gray-200 transition hover:text-blue-500 dark:hover:text-blue-400 font-bold"
             >
               Événements
             </Link>
@@ -91,14 +89,14 @@ export default function Navbar() {
       {isMenuOpen && (
         <div className="md:hidden flex flex-col items-center space-y-2 pt-2 pb-3 bg-white dark:bg-gray-900">
           <Link
-            href="/tutorat"
-            className="text-gray-800 text-lg dark:text-gray-200 hover:text-blue-500 dark:hover:text-blue-400 font-bold"
+            href="/pages/Mentorat"
+            className="text-gray-800 text-lg dark:text-gray-200 transition hover:text-blue-500 dark:hover:text-blue-400 font-bold"
           >
-            Tutorat
+            Mentorat
           </Link>
           <Link
             href="/evenements"
-            className="text-gray-800 text-lg dark:text-gray-200 hover:text-blue-500 dark:hover:text-blue-400 font-bold"
+            className="text-gray-800 text-lg dark:text-gray-200 transition hover:text-blue-500 dark:hover:text-blue-400 font-bold"
           >
             Événements
           </Link>

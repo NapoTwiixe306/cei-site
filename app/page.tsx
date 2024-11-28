@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import { useEffect } from "react";
 import Navbar from "@/src/components/Navbar";
 import Link from "next/link";
@@ -12,37 +12,44 @@ export default function Home() {
     gsap.fromTo(
       ".hero-title",
       { opacity: 0, y: -50 },
-      { opacity: 1, y: 0, duration: 1, ease: "power3.out" }
+      { opacity: 1, y: 0, duration: 1, ease: "power3.out" },
     );
 
     gsap.fromTo(
       ".hero-description",
       { opacity: 0, x: -100 },
-      { opacity: 1, x: 0, duration: 1, delay: 0.2, ease: "power3.out" }
+      { opacity: 1, x: 0, duration: 1, delay: 0.2, ease: "power3.out" },
     );
 
     gsap.fromTo(
       ".hero-button",
       { opacity: 0, y: 50 },
-      { opacity: 1, y: 0, duration: 1, delay: 0.4, ease: "power3.out", stagger: 0.3 }
+      {
+        opacity: 1,
+        y: 0,
+        duration: 1,
+        delay: 0.4,
+        ease: "power3.out",
+        stagger: 0.3,
+      },
     );
 
     gsap.fromTo(
       ".section-title",
       { opacity: 0, y: 50 },
-      { opacity: 1, y: 0, duration: 1, delay: 0.6, ease: "power3.out" }
+      { opacity: 1, y: 0, duration: 1, delay: 0.6, ease: "power3.out" },
     );
 
     gsap.fromTo(
       ".section-text",
       { opacity: 0, x: -100 },
-      { opacity: 1, x: 0, duration: 1, delay: 0.8, ease: "power3.out" }
+      { opacity: 1, x: 0, duration: 1, delay: 0.8, ease: "power3.out" },
     );
 
     gsap.fromTo(
       ".logo",
       { opacity: 0, scale: 0.5 },
-      { opacity: 1, scale: 1, duration: 1, delay: 1, ease: "power3.out" }
+      { opacity: 1, scale: 1, duration: 1, delay: 1, ease: "power3.out" },
     );
   }, []);
 
@@ -51,7 +58,7 @@ export default function Home() {
       <Navbar />
       <div className="bg-white dark:bg-gray-800 min-h-screen flex flex-col justify-center items-center">
         {/* Section principale */}
-        <div className="flex flex-col items-center text-center px-4 py-10">
+        <div className="flex flex-col items-center text-center px-4 py-10  mt-12">
           <h1 className="hero-title text-black dark:text-white text-3xl sm:text-5xl font-bold">
             Cercle des Étudiants en Informatique
           </h1>
@@ -62,12 +69,12 @@ export default function Home() {
           </p>
           <div className="flex flex-col justify-center items-center sm:flex-row gap-4 mt-6">
             <Link href="/pages/event">
-              <button className="hero-button px-6 py-3 rounded-lg bg-blue-500">
+              <button className="hero-button px-6 py-3 rounded-lg bg-blue-500 hover:bg-blue-700 transition">
                 Événements
               </button>
             </Link>
             <Link href="/pages/tutoring">
-              <button className="hero-button px-6 py-3 rounded-lg bg-gray-500">
+              <button className="hero-button px-6 py-3 rounded-lg bg-blue-500 hover:bg-blue-700 transition">
                 Tutorat
               </button>
             </Link>
@@ -80,26 +87,37 @@ export default function Home() {
             <h2 className="section-title text-black dark:text-white text-2xl sm:text-4xl font-bold">
               Qui sommes-nous
             </h2>
-            <p className="section-text indent-4 text-black dark:text-white mt-4 text-base sm:text-lg">
-              Le Cercle Étudiant en Informatique <span className="font-bold">(CEI)</span> est une association
-              étudiante dédiée aux étudiants en informatique. <br/>
+            <p className="section-text text-black text-justify dark:text-white mt-4 text-base sm:text-lg">
+              Le Cercle Étudiant en Informatique{" "}
+              <span className="font-bold">(CEI)</span> est une association
+              étudiante dédiée aux étudiants en informatique. <br />
             </p>
-            <p className="section-text indent-4 text-black dark:text-white mt-4 text-base sm:text-lg">
-              Notre mission est de créer une communauté dynamique et enrichissante pour tous les passionnés
-              d&#39;informatique.
+            <p className="section-text text-justify text-black dark:text-white mt-4 text-base sm:text-lg">
+              Notre mission est de créer une communauté dynamique et
+              enrichissante pour tous les passionnés d&#39;informatique.
             </p>
-            <p className="section-text indent-4 text-black dark:text-white mt-4 text-base sm:text-lg">
-              Nous organisons régulièrement des événements, des sessions de tutorat
-              et des activités pour favoriser l&#39;apprentissage et les échanges
-              entre étudiants.
+            <p className="section-text text-justify text-black dark:text-white mt-4 text-base sm:text-lg">
+              Nous organisons régulièrement des événements, des sessions de
+              tutorat et des activités pour favoriser l&#39;apprentissage et les
+              échanges entre étudiants.
             </p>
           </div>
           <div className="flex justify-center lg:w-1/2">
             <div className="block dark:hidden logo">
-              <Image src={LogoBlack} alt="Logo CEI Light" width={400} height={200} />
+              <Image
+                src={LogoBlack}
+                alt="Logo CEI Light"
+                width={400}
+                height={200}
+              />
             </div>
             <div className="hidden dark:block logo">
-              <Image src={LogoWhite} alt="Logo CEI Dark" width={400} height={200} />
+              <Image
+                src={LogoWhite}
+                alt="Logo CEI Dark"
+                width={400}
+                height={200}
+              />
             </div>
           </div>
         </div>
@@ -107,8 +125,12 @@ export default function Home() {
         {/* Section Newsletter */}
         <div className="text-black dark:text-white w-full py-12">
           <div className="flex flex-col items-center px-4">
-            <h3 className="text-3xl font-bold mb-4">Abonnez-vous à notre newsletter</h3>
-            <p className="text-lg mb-6">Restez à jour avec nos événements et nos activités.</p>
+            <h3 className="text-3xl font-bold mb-4">
+              Abonnez-vous à notre newsletter
+            </h3>
+            <p className="text-lg mb-6">
+              Restez à jour avec nos événements et nos activités.
+            </p>
             <form className="flex items-center w-full max-w-sm ">
               <input
                 type="email"
@@ -129,7 +151,10 @@ export default function Home() {
         {/* Footer */}
         <footer className="text-black dark:text-white w-full flex items-center justify-between p-6">
           <div className="text-center mt-4 text-sm">
-            <p>&copy; 2024 Cercle des Étudiants en Informatique. Tous droits réservés.</p>
+            <p>
+              &copy; 2024 Cercle des Étudiants en Informatique. Tous droits
+              réservés.
+            </p>
           </div>
           <div className="flex justify-center items-center space-x-8">
             <Link href="https://www.facebook.com/CEI.HELMo" target="_blank">
