@@ -58,10 +58,10 @@ export default function Navbar() {
           </div>
           <div className="hidden md:flex space-x-6">
             <Link
-              href="/pages/Mentorat"
+              href="/pages/Tutorat"
               className="text-gray-800 text-lg dark:text-gray-200 transition hover:text-blue-500 dark:hover:text-blue-400 font-bold"
             >
-              Mentorat
+              Tutorat
             </Link>
             <Link
               href="/evenements"
@@ -89,10 +89,10 @@ export default function Navbar() {
       {isMenuOpen && (
         <div className="md:hidden flex flex-col items-center space-y-2 pt-2 pb-3 bg-white dark:bg-gray-900">
           <Link
-            href="/pages/Mentorat"
+            href="/pages/Tutorat"
             className="text-gray-800 text-lg dark:text-gray-200 transition hover:text-blue-500 dark:hover:text-blue-400 font-bold"
           >
-            Mentorat
+            Tutorat
           </Link>
           <Link
             href="/evenements"

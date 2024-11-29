@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, ChangeEvent, FormEvent } from "react";
 import Navbar from "@/src/components/Navbar";
 import { GraduationCap, HelpCircle, Calendar, Users } from "lucide-react";
 
@@ -30,9 +30,62 @@ const textData = [
   },
 ];
 
-export default function Mentorat() {
-  const [departement, setDepartement] = useState("");
+export default function Tutorat() {
   const [activeTab, setActiveTab] = useState<"mentore" | "mentor">("mentore");
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    discord: "",
+    departement: "",
+  });
+
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { id, value } = e.target;
+    setFormData({ ...formData, [id]: value });
+  };
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const webhookUrl =
+      "https://discord.com/api/webhooks/1311703915884052531/jyX0-bPaQoOHr91iayDts1QuPGmWtrfFD4CoT00tZtHqPewABMro5K0nuSndJgdTO6x8";
+
+    const roleId =
+      activeTab === "mentore"
+        ? "1311704048797221036"
+        : "1311704299234918441";
+
+    const payload = {
+      content: `Nouvelle inscription : <@&${roleId}>`,
+      embeds: [
+        {
+          title: "Détails de l'inscription",
+          fields: [
+            { name: "Nom", value: formData.name || "Non fourni", inline: true },
+            { name: "Email", value: formData.email || "Non fourni", inline: true },
+            { name: "Discord", value: formData.discord || "Non fourni", inline: true },
+            { name: "Département", value: formData.departement || "Non fourni", inline: true },
+          ],
+          color: activeTab === "mentore" ? 0x3498db : 0x2ecc71, 
+        },
+      ],
+    };
+
+    try {
+      await fetch(webhookUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+      alert("Inscription envoyée avec succès !");
+      setFormData({ name: "", email: "", discord: "", departement: "" }); 
+    } catch (error) {
+      console.error("Erreur lors de l'envoi des données au webhook :", error);
+      alert("Une erreur s'est produite. Veuillez réessayer.");
+    }
+  };
 
   return (
     <>
@@ -49,11 +102,11 @@ export default function Mentorat() {
               mentor vous-même. Rejoignez notre communauté d&#39;apprenants!
             </p>
           </div>
-          <ul className="mt-6 space-y-4">
+          <ul className="mt-6 space-y-6 cursor-pointer">
             {textData.map((item, index) => (
               <li
                 key={index}
-                className="flex items-start space-x-4 bg-white dark:bg-gray-500 border-2 border-gray-400 p-4 shadow-lg rounded-lg dark:shadow-white dark:shadow-md"
+                className="flex items-start space-x-4 bg-white dark:bg-gray-500 border-2 hover:scale-105 transition border-gray-400 p-4 shadow-lg rounded-lg dark:shadow-white dark:shadow-md"
               >
                 <div>{item.icon}</div>
                 <div>
@@ -102,7 +155,7 @@ export default function Mentorat() {
                 Je veux aider (B2/B3)
               </button>
             </div>
-            <form className="space-y-4">
+            <form className="space-y-4" onSubmit={handleSubmit}>
               <div>
                 <label
                   htmlFor="name"
@@ -113,6 +166,8 @@ export default function Mentorat() {
                 <input
                   type="text"
                   id="name"
+                  value={formData.name}
+                  onChange={handleInputChange}
                   className="mt-1 h-10 p-2 text-black block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
                   placeholder="Entrez votre nom complet"
                 />
@@ -127,6 +182,8 @@ export default function Mentorat() {
                 <input
                   type="email"
                   id="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
                   className="mt-1 h-10 p-2 text-black block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
                   placeholder="votre.nom@student.helmo.be"
                 />
@@ -141,6 +198,8 @@ export default function Mentorat() {
                 <input
                   type="text"
                   id="discord"
+                  value={formData.discord}
+                  onChange={handleInputChange}
                   className="mt-1 h-10 p-2 text-black block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
                   placeholder="utilisateur#0000"
                 />
@@ -154,8 +213,8 @@ export default function Mentorat() {
                 </label>
                 <select
                   id="departement"
-                  value={departement}
-                  onChange={(e) => setDepartement(e.target.value)}
+                  value={formData.departement}
+                  onChange={handleInputChange}
                   className="mt-1 h-10 p-2 block w-full text-black rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
                 >
                   <option value="">Sélectionnez votre département</option>
