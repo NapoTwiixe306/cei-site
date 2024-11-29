@@ -45,7 +45,6 @@ export default function Tutorat() {
     setFormData({ ...formData, [id]: value });
   };
 
-  // Fonction spécifique pour le textarea
   const handleTextAreaChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     const { id, value } = e.target;
     setFormData({ ...formData, [id]: value });
@@ -59,7 +58,7 @@ export default function Tutorat() {
     if (!webhookUrl) {
       console.error("L'URL du webhook est manquante. Vérifiez vos variables d'environnement.");
       alert("Erreur de configuration : L'URL du webhook est absente.");
-      return; // Arrêtez l'exécution si le webhook n'est pas défini
+      return;
     }
   
     const payload = {
@@ -67,7 +66,7 @@ export default function Tutorat() {
       embeds: [
         {
           title: "Détails de l'inscription",
-          color: activeTab === "tutoree" ? 0x3498db : 0x2ecc71, // Couleurs conditionnelles
+          color: activeTab === "tutoree" ? 0x3498db : 0x2ecc71,
           author: { name: "Programme de Tutorat" },
           fields: [
             { name: "Nom", value: `${formData.name || "Non fourni"}\n`, inline: false },
