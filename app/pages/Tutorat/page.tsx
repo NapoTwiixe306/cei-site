@@ -31,11 +31,12 @@ const textData = [
 ];
 
 export default function Tutorat() {
-  const [activeTab, setActiveTab] = useState<"mentore" | "mentor">("mentore");
+  const [activeTab, setActiveTab] = useState<"tutor" | "tutoree">("tutor");
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     discord: "",
+    details: "",
     departement: "",
   });
 
@@ -44,48 +45,64 @@ export default function Tutorat() {
     setFormData({ ...formData, [id]: value });
   };
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    const webhookUrl =
-      "https://discord.com/api/webhooks/1311703915884052531/jyX0-bPaQoOHr91iayDts1QuPGmWtrfFD4CoT00tZtHqPewABMro5K0nuSndJgdTO6x8";
-
-    const roleId =
-      activeTab === "mentore"
-        ? "1311704048797221036"
-        : "1311704299234918441";
-
-    const payload = {
-      content: `Nouvelle inscription : <@&${roleId}>`,
-      embeds: [
-        {
-          title: "Détails de l'inscription",
-          fields: [
-            { name: "Nom", value: formData.name || "Non fourni", inline: true },
-            { name: "Email", value: formData.email || "Non fourni", inline: true },
-            { name: "Discord", value: formData.discord || "Non fourni", inline: true },
-            { name: "Département", value: formData.departement || "Non fourni", inline: true },
-          ],
-          color: activeTab === "mentore" ? 0x3498db : 0x2ecc71, 
-        },
-      ],
-    };
-
-    try {
-      await fetch(webhookUrl, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      });
-      alert("Inscription envoyée avec succès !");
-      setFormData({ name: "", email: "", discord: "", departement: "" }); 
-    } catch (error) {
-      console.error("Erreur lors de l'envoi des données au webhook :", error);
-      alert("Une erreur s'est produite. Veuillez réessayer.");
-    }
+  // Fonction spécifique pour le textarea
+  const handleTextAreaChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    const { id, value } = e.target;
+    setFormData({ ...formData, [id]: value });
   };
+
+const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  e.preventDefault();
+
+  const webhookUrl = process.env.NEXT_PUBLIC_DISCORD_WEBHOOK_URL;
+
+  // const roleId =
+  //   activeTab === "tutoree"
+  //     ? "1026427304873828383"
+  //     : "635761315503276053";
+  
+  const payload = {
+    content: `Nouvelle inscription : `,
+    embeds: [
+      {
+        title: "Détails de l'inscription",
+        color: activeTab === "tutoree" ? 0x3498db : 0x2ecc71, 
+        author: {
+          name: "Programme de Tutorat",
+        },
+        fields: [
+          { name: "Nom", value: `${formData.name || "Non fourni"}\n`, inline: false },
+          { name: "Email", value: `${formData.email || "Non fourni"}\n`, inline: false },
+          { name: "Discord", value: `${formData.discord || "Non fourni"}\n`, inline: false },
+          { name: "Détails", value: `${formData.details || "Non fourni"}\n`, inline: false },
+          { name: "Département", value: `${formData.departement || "Non fourni"}\n`, inline: false },
+        ],
+        description: "Voici les détails de l'inscription à notre programme de tutorat.\n\nNous vous remercions de votre inscription et nous vous contacterons bientôt pour vous fournir des informations supplémentaires.",
+        footer: {
+          text: "Tutoring Program - HELMo",
+          icon_url: "https://www.example.com/footer-logo.png",
+        },
+        timestamp: new Date(),
+      },
+    ],
+  };
+
+  try {
+    await fetch(webhookUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+    alert("Inscription envoyée avec succès !");
+    setFormData({ name: "", email: "", discord: "", details: "", departement: "" }); 
+  } catch (error) {
+    console.error("Erreur lors de l'envoi des données au webhook :", error);
+    alert("Une erreur s'est produite. Veuillez réessayer.");
+  }
+};
+
 
   return (
     <>
@@ -94,7 +111,7 @@ export default function Tutorat() {
         {/* Section gauche */}
         <div className="left w-full md:w-1/2 p-4">
           <div>
-            <h1 className="font-bold text-3xl md:text-5xl text-black dark:text-white text-center md:text-left">
+            <h1 className="font-bold text-3xl md:text-5xl  text-black dark:text-white text-center md:text-left">
               Programme de Tutorat
             </h1>
             <p className="text-lg md:text-xl mt-3 text-gray-400 text-center md:text-left">
@@ -136,21 +153,21 @@ export default function Tutorat() {
             <div className="flex flex-col sm:flex-row mb-4 space-y-2 sm:space-y-0 sm:space-x-2 bg-gray-200 border-2 border-gray-400 rounded-md">
               <button
                 className={`flex-1 py-2 px-4 text-center rounded-md ${
-                  activeTab === "mentore"
+                  activeTab === "tutoree"
                     ? "bg-white text-black dark:text-black"
                     : "bg-muted text-gray-400"
                 }`}
-                onClick={() => setActiveTab("mentore")}
+                onClick={() => setActiveTab("tutoree")}
               >
                 J&#39;ai besoin d&#39;aide (B1)
               </button>
               <button
                 className={`flex-1 py-2 px-4 text-center rounded-md ${
-                  activeTab === "mentor"
+                  activeTab === "tutor"
                     ? "bg-white text-black dark:text-black"
                     : "bg-muted text-gray-400"
                 }`}
-                onClick={() => setActiveTab("mentor")}
+                onClick={() => setActiveTab("tutor")}
               >
                 Je veux aider (B2/B3)
               </button>
@@ -205,6 +222,22 @@ export default function Tutorat() {
                 />
               </div>
               <div>
+                  <label
+                    htmlFor="details"
+                    className="block text-sm font-medium text-black dark:text-white"
+                  >
+                    Détails sur la demande
+                  </label>
+                  <textarea
+                    id="details"
+                    value={formData.details}
+                    onChange={handleTextAreaChange}
+                    className="mt-1 h-24 p-2 text-black block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50"
+                    placeholder="Détails"
+                  />
+                </div>
+
+              <div>
                 <label
                   htmlFor="departement"
                   className="block text-sm font-medium text-black dark:text-white"
@@ -221,17 +254,17 @@ export default function Tutorat() {
                   <option value="apps">
                     Développement d&#39;applications / programmation
                   </option>
-                  <option value="networks">Réseaux et sécurité</option>
-                  <option value="systems">Systèmes d&#39;exploitation</option>
+                  <option value="networks">Cybersécurité</option>
+                  <option value="systems">Intélligence Artificielle</option>
                 </select>
               </div>
               <button
                 type="submit"
                 className="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-700 dark:hover:bg-gray-500 hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
               >
-                {activeTab === "mentore"
-                  ? "S'inscrire comme mentoré"
-                  : "S'inscrire comme mentor"}
+                {activeTab === "tutoree"
+                  ? "S'inscrire comme tutoré"
+                  : "S'inscrire comme tuteur"}
               </button>
             </form>
             <p className="mt-4 text-xs text-gray-500 text-center">

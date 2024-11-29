@@ -64,7 +64,7 @@ export default function Navbar() {
               Tutorat
             </Link>
             <Link
-              href="/evenements"
+              href="/pages/Event"
               className="text-gray-800 text-lg dark:text-gray-200 transition hover:text-blue-500 dark:hover:text-blue-400 font-bold"
             >
               Événements
