@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { FaBars, FaTimes, FaMoon, FaSun } from "react-icons/fa";
+import { FaBars, FaTimes, FaMoon, FaSun, FaArrowRight } from "react-icons/fa";
 import LogoBlack from "@/src/img/LogoBlack.svg";
 import LogoWhite from "@/src/img/LogoWhite.svg";
 
@@ -69,6 +69,12 @@ export default function Navbar() {
             >
               Événements
             </Link>
+            <Link href="/auth/register">
+            <span className="flex items-center p-2 px-5 text-lg font-bold text-black rounded-md cursor-pointer bg-customBlue dark:text-black">
+              Register{" "}
+              <FaArrowRight className="w-4 h-4 ml-2 text-black dark:text-black" />
+            </span>
+          </Link>
           </div>
           <div className="flex items-center space-x-4">
             <button
@@ -99,6 +105,12 @@ export default function Navbar() {
             className="text-gray-800 text-lg dark:text-gray-200 transition hover:text-blue-500 dark:hover:text-blue-400 font-bold"
           >
             Événements
+          </Link>
+          <Link href="/auth/register">
+            <span className="flex items-center p-2 px-5 text-lg font-bold text-black rounded-md cursor-pointer bg-customBlue dark:text-black">
+              Register{" "}
+              <FaArrowRight className="w-4 h-4 ml-2 text-black dark:text-black" />
+            </span>
           </Link>
         </div>
       )}
