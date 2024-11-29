@@ -51,57 +51,58 @@ export default function Tutorat() {
     setFormData({ ...formData, [id]: value });
   };
 
-const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-  e.preventDefault();
-
-  const webhookUrl = process.env.NEXT_PUBLIC_DISCORD_WEBHOOK_URL;
-
-  // const roleId =
-  //   activeTab === "tutoree"
-  //     ? "1026427304873828383"
-  //     : "635761315503276053";
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
   
-  const payload = {
-    content: `Nouvelle inscription : `,
-    embeds: [
-      {
-        title: "Détails de l'inscription",
-        color: activeTab === "tutoree" ? 0x3498db : 0x2ecc71, 
-        author: {
-          name: "Programme de Tutorat",
+    const webhookUrl = process.env.NEXT_PUBLIC_DISCORD_WEBHOOK_URL;
+  
+    if (!webhookUrl) {
+      console.error("L'URL du webhook est manquante. Vérifiez vos variables d'environnement.");
+      alert("Erreur de configuration : L'URL du webhook est absente.");
+      return; // Arrêtez l'exécution si le webhook n'est pas défini
+    }
+  
+    const payload = {
+      content: `Nouvelle inscription : `,
+      embeds: [
+        {
+          title: "Détails de l'inscription",
+          color: activeTab === "tutoree" ? 0x3498db : 0x2ecc71, // Couleurs conditionnelles
+          author: { name: "Programme de Tutorat" },
+          fields: [
+            { name: "Nom", value: `${formData.name || "Non fourni"}\n`, inline: false },
+            { name: "Email", value: `${formData.email || "Non fourni"}\n`, inline: false },
+            { name: "Discord", value: `${formData.discord || "Non fourni"}\n`, inline: false },
+            { name: "Détails", value: `${formData.details || "Non fourni"}\n`, inline: false },
+            { name: "Département", value: `${formData.departement || "Non fourni"}\n`, inline: false },
+          ],
+          description:
+            "Voici les détails de l'inscription à notre programme de tutorat.\n\nNous vous remercions de votre inscription et nous vous contacterons bientôt pour vous fournir des informations supplémentaires.",
+          footer: { text: "Tutoring Program - HELMo", icon_url: "https://www.example.com/footer-logo.png" },
+          timestamp: new Date(),
         },
-        fields: [
-          { name: "Nom", value: `${formData.name || "Non fourni"}\n`, inline: false },
-          { name: "Email", value: `${formData.email || "Non fourni"}\n`, inline: false },
-          { name: "Discord", value: `${formData.discord || "Non fourni"}\n`, inline: false },
-          { name: "Détails", value: `${formData.details || "Non fourni"}\n`, inline: false },
-          { name: "Département", value: `${formData.departement || "Non fourni"}\n`, inline: false },
-        ],
-        description: "Voici les détails de l'inscription à notre programme de tutorat.\n\nNous vous remercions de votre inscription et nous vous contacterons bientôt pour vous fournir des informations supplémentaires.",
-        footer: {
-          text: "Tutoring Program - HELMo",
-          icon_url: "https://www.example.com/footer-logo.png",
-        },
-        timestamp: new Date(),
-      },
-    ],
+      ],
+    };
+  
+    try {
+      const response = await fetch(webhookUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+  
+      if (!response.ok) {
+        throw new Error(`Erreur ${response.status}: ${response.statusText}`);
+      }
+  
+      alert("Inscription envoyée avec succès !");
+      setFormData({ name: "", email: "", discord: "", details: "", departement: "" }); // Réinitialise le formulaire
+    } catch (error) {
+      console.error("Erreur lors de l'envoi des données au webhook :", error);
+      alert("Une erreur s'est produite. Veuillez réessayer.");
+    }
   };
-
-  try {
-    await fetch(webhookUrl, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(payload),
-    });
-    alert("Inscription envoyée avec succès !");
-    setFormData({ name: "", email: "", discord: "", details: "", departement: "" }); 
-  } catch (error) {
-    console.error("Erreur lors de l'envoi des données au webhook :", error);
-    alert("Une erreur s'est produite. Veuillez réessayer.");
-  }
-};
+  
 
 
   return (
