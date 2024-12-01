@@ -69,13 +69,8 @@ export default function Navbar() {
             >
               Événements
             </Link>
-            <Link href="/auth/register">
-            <span className="flex items-center p-2 px-5 text-lg font-bold text-black rounded-md cursor-pointer bg-customBlue dark:text-black">
-              Register{" "}
-              <FaArrowRight className="w-4 h-4 ml-2 text-black dark:text-black" />
-            </span>
-          </Link>
           </div>
+          
           <div className="flex items-center space-x-4">
             <button
               onClick={toggleDarkMode}
@@ -89,6 +84,14 @@ export default function Navbar() {
             >
               {isMenuOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
             </button>
+            <div className="hidden md:flex space-x-6">
+            <Link href="/auth/register">
+              <span className="flex items-center p-2 px-5 text-lg bg-black dark:bg-white font-bold text-white rounded-md cursor-pointer bg-customBlue dark:text-black">
+                Register{" "}
+                <FaArrowRight className="w-4 h-4 ml-2 text-white dark:text-black" />
+              </span>
+            </Link>
+            </div>
           </div>
         </div>
       </div>
@@ -101,17 +104,17 @@ export default function Navbar() {
             Tutorat
           </Link>
           <Link
-            href="/evenements"
+            href="/pages/Event"
             className="text-gray-800 text-lg dark:text-gray-200 transition hover:text-blue-500 dark:hover:text-blue-400 font-bold"
           >
             Événements
           </Link>
           <Link href="/auth/register">
-            <span className="flex items-center p-2 px-5 text-lg font-bold text-black rounded-md cursor-pointer bg-customBlue dark:text-black">
-              Register{" "}
-              <FaArrowRight className="w-4 h-4 ml-2 text-black dark:text-black" />
-            </span>
-          </Link>
+              <span className="flex items-center p-2 px-5 text-lg bg-black dark:bg-white font-bold text-white rounded-md cursor-pointer bg-customBlue dark:text-black">
+                Register{" "}
+                <FaArrowRight className="w-4 h-4 ml-2 text-white dark:text-black" />
+              </span>
+            </Link>
         </div>
       )}
     </nav>

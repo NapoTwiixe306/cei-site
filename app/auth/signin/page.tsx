@@ -48,11 +48,9 @@ export default function SignIn() {
       if (signInResponse?.error) {
         toast.error("Invalid email or password", { position: "top-center" });
       } else if (signInResponse?.ok) {
-        // Fetch the session to check the user's role
         const session = await getSession();
-        const userRole = session?.user?.role; // Vérifie si le rôle est disponible
+        const userRole = session?.user?.role;
   
-        // Redirect based on role
         if (userRole === "ADMIN") {
           window.location.href = "/pages/Dashboard/admin";
         } else if (userRole === "USER") {
