@@ -44,15 +44,15 @@ const DashboardContent: React.FC<DashboardContentProps> = ({ children }) => {
 const renderContent = (activePage: string) => {
   switch (activePage) {
     case 'home':
-      return <div>Accueil</div>;
+      return <div className="text-black dark:text-white">Accueil</div>;
     case 'users':
-      return <div>Gestion des utilisateurs</div>;
+      return <div className="text-black dark:text-white">Gestion des utilisateurs</div>;
     case 'admin':
-      return <div>Admin Panel</div>;
+      return <div className="text-black dark:text-white">Admin Panel</div>;
     case 'settings':
-      return <div>Paramètres</div>;
+      return <div className="text-black dark:text-white">Paramètres</div>;
     default:
-      return <div>Page non trouvée</div>;
+      return <div className="text-black dark:text-white">Page non trouvée</div>;
   }
 };
 
