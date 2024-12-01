@@ -13,7 +13,8 @@ const AdminDashboard = () => {
   return (
     <>
       <DashboardContent>
-        <div className="ml-64 dark:bg-gray-800">  {/* ml-20 pour petite taille, ml-64 pour grande taille */}
+        <div className=""> 
+
           <h2 className="text-black dark:text-white text-2xl font-bold">Admin Dashboard</h2>
           <p className="text-black dark:text-white">Bienvenue, {session.user?.email} !</p>
         </div>
