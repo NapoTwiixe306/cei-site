@@ -11,10 +11,8 @@ export interface LogoutButtonProps {
 const LogoutButton: React.FC<LogoutButtonProps> = ({ onLogout }) => {
   const handleLogout = async () => {
     try {
-      await signOut({
-        callbackUrl: "/",
-        redirect: true,
-      });
+      await signOut();
+      window.location.href = "/"
       alert("Vous êtes bien déconnecté");
     } catch (error) {
       console.error("Erreur lors de la déconnexion:", error);
