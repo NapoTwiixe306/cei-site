@@ -1,16 +1,17 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { FaBars, FaTimes, FaMoon, FaSun, FaArrowRight } from "react-icons/fa";
+import { FaBars, FaTimes, FaMoon, FaSun, FaArrowRight, FaChevronDown } from "react-icons/fa";
 import LogoBlack from "@/src/img/LogoBlack.svg";
 import LogoWhite from "@/src/img/LogoWhite.svg";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
-  // Basculer le mode sombre
   const toggleDarkMode = () => {
     setIsDarkMode(!isDarkMode);
     if (isDarkMode) {
@@ -35,8 +36,25 @@ export default function Navbar() {
     localStorage.setItem("theme", isDarkMode ? "dark" : "light");
   }, [isDarkMode]);
 
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
+  };
+
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
   };
 
   return (
@@ -84,13 +102,27 @@ export default function Navbar() {
             >
               {isMenuOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
             </button>
-            <div className="hidden md:flex space-x-6">
-            <Link href="/auth/register">
-              <span className="flex items-center p-2 px-5 text-lg bg-black dark:bg-white font-bold text-white rounded-md cursor-pointer bg-customBlue dark:text-black">
-                Register{" "}
-                <FaArrowRight className="w-4 h-4 ml-2 text-white dark:text-black" />
-              </span>
-            </Link>
+            <div className="hidden md:block relative" ref={dropdownRef}>
+              <button
+                onClick={toggleDropdown}
+                className="flex items-center p-2 px-5 text-lg bg-black dark:bg-white font-bold text-white rounded-md cursor-pointer bg-customBlue dark:text-black"
+              >
+                Auth <FaChevronDown className="ml-2" />
+              </button>
+              {isDropdownOpen && (
+                <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-md shadow-lg py-1 z-10">
+                  <Link href="/auth/register">
+                    <span className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">
+                      Inscription
+                    </span>
+                  </Link>
+                  <Link href="/auth/signin">
+                    <span className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">
+                      Connexion
+                    </span>
+                  </Link>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -109,12 +141,18 @@ export default function Navbar() {
           >
             Événements
           </Link>
-          <Link href="/auth/register">
-              <span className="flex items-center p-2 px-5 text-lg bg-black dark:bg-white font-bold text-white rounded-md cursor-pointer bg-customBlue dark:text-black">
-                Register{" "}
-                <FaArrowRight className="w-4 h-4 ml-2 text-white dark:text-black" />
-              </span>
-            </Link>
+          <Link
+            href="/auth/register"
+            className="text-gray-800 text-lg dark:text-gray-200 transition hover:text-blue-500 dark:hover:text-blue-400 font-bold"
+          >
+            Register
+          </Link>
+          <Link
+            href="/auth/login"
+            className="text-gray-800 text-lg dark:text-gray-200 transition hover:text-blue-500 dark:hover:text-blue-400 font-bold"
+          >
+            Connexion
+          </Link>
         </div>
       )}
     </nav>
