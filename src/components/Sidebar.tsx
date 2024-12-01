@@ -2,8 +2,8 @@
 
 import React, { useState, useEffect } from 'react'
 import { Home, Settings, Users, LogOut, Moon, Sun, Shield } from 'lucide-react'
-import { useSession, signOut } from 'next-auth/react'
-
+import { useSession } from 'next-auth/react'
+import Link from 'next/link'
 const Sidebar = ({ setActivePage }: { setActivePage: (page: string) => void }) => {
   const { data: session } = useSession()
   const [isExpanded, setIsExpanded] = useState(false)
@@ -33,10 +33,7 @@ const Sidebar = ({ setActivePage }: { setActivePage: (page: string) => void }) =
     setActivePage(page)
   }
 
-  // Fonction pour déconnecter l'utilisateur
-  const handleLogout = () => {
-    signOut({ callbackUrl: '/' }) // Redirection vers la page d'accueil après la déconnexion
-  }
+
 
   return (
     <div
@@ -81,11 +78,10 @@ const Sidebar = ({ setActivePage }: { setActivePage: (page: string) => void }) =
             </span>
           </button>
           <button
-            onClick={handleLogout}
             className="flex w-full items-center justify-center rounded-md p-2 hover:bg-gray-200 dark:hover:bg-gray-700"
           >
             <LogOut size={24} />
-            <span className={`ml-2 ${isExpanded ? 'block' : 'hidden'}`}>Déconnexion</span>
+            <Link href='/auth/signout'>Déconnexion</Link>
           </button>
         </div>
       </div>
