@@ -1,12 +1,11 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
-import { Home, Settings, Users, LogOut, Moon, Sun } from 'lucide-react'
-import Link from 'next/link'
+import { Home, Settings, Users, LogOut, Moon, Sun, Shield } from 'lucide-react'
 import { useSession } from 'next-auth/react'
 
-const Sidebar = () => {
-    const {data: session} = useSession();
+const Sidebar = ({ setActivePage }: { setActivePage: (page: string) => void }) => {
+  const { data: session } = useSession()
   const [isExpanded, setIsExpanded] = useState(false)
   const [isDarkMode, setIsDarkMode] = useState(false)
 
@@ -26,8 +25,16 @@ const Sidebar = () => {
     document.documentElement.classList.toggle('dark')
   }
 
+  // Récupérer le rôle
+  const role = session?.user?.role
+
+  // Fonction pour changer de page active
+  const handleSetActivePage = (page: string) => {
+    setActivePage(page)
+  }
+
   return (
-    <div 
+    <div
       className={`relative left-0 top-0 h-screen bg-white dark:bg-gray-800 text-gray-800 dark:text-white transition-all duration-300 ease-in-out ${
         isExpanded ? 'w-64' : 'w-20'
       } hover:w-64 shadow-lg`}
@@ -38,13 +45,24 @@ const Sidebar = () => {
         <div>
           <div className="mb-8 flex items-center justify-center">
             <span className={`text-2xl font-bold ${isExpanded ? 'block' : 'hidden'}`}>
-                <h1>Bienvenue, <span>{session?.user.name}</span></h1>
+              Bienvenue, <span>{session?.user?.name}</span>
             </span>
           </div>
           <nav>
-            <SidebarItem icon={<Home size={24} />} text="Accueil" href="/" expanded={isExpanded} />
-            <SidebarItem icon={<Users size={24} />} text="Utilisateurs" href="/users" expanded={isExpanded} />
-            <SidebarItem icon={<Settings size={24} />} text="Paramètres" href="/settings" expanded={isExpanded} />
+            <SidebarItem icon={<Home size={24} />} text="Accueil" onClick={() => handleSetActivePage('home')} expanded={isExpanded} />
+            
+            {role === 'ADMIN' && (
+              <>
+                <SidebarItem icon={<Users size={24} />} text="Gestion des utilisateurs" onClick={() => handleSetActivePage('users')} expanded={isExpanded} />
+                <SidebarItem icon={<Shield size={24} />} text="Admin Panel" onClick={() => handleSetActivePage('admin')} expanded={isExpanded} />
+              </>
+            )}
+
+            {role === 'user' && (
+              <>
+                <SidebarItem icon={<Settings size={24} />} text="Paramètres" onClick={() => handleSetActivePage('settings')} expanded={isExpanded} />
+              </>
+            )}
           </nav>
         </div>
         <div>
@@ -73,18 +91,20 @@ const Sidebar = () => {
 interface SidebarItemProps {
   icon: React.ReactNode
   text: string
-  href: string
+  onClick: () => void
   expanded: boolean
 }
 
-const SidebarItem: React.FC<SidebarItemProps> = ({ icon, text, href, expanded }) => {
+const SidebarItem: React.FC<SidebarItemProps> = ({ icon, text, onClick, expanded }) => {
   return (
-    <Link href={href} className="mb-4 flex items-center rounded-md p-2 hover:bg-gray-200 dark:hover:bg-gray-700">
+    <button
+      onClick={onClick}
+      className="mb-4 flex items-center rounded-md p-2 hover:bg-gray-200 dark:hover:bg-gray-700 w-full"
+    >
       {icon}
       <span className={`ml-2 ${expanded ? 'block' : 'hidden'}`}>{text}</span>
-    </Link>
+    </button>
   )
 }
 
 export default Sidebar
-
