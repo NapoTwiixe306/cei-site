@@ -81,7 +81,8 @@ const Sidebar = ({ setActivePage }: { setActivePage: (page: string) => void }) =
             className="flex w-full items-center justify-center rounded-md p-2 hover:bg-gray-200 dark:hover:bg-gray-700"
           >
             <LogOut size={24} />
-            <Link href='/auth/signout'>Déconnexion</Link>
+            <Link href='/auth/signout' className={`ml-2 ${isExpanded ? 'block' : 'hidden'}`}>Déconnexion</Link>
+
           </button>
         </div>
       </div>
