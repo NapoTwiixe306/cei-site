@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react'
 import { Home, Settings, Users, LogOut, Moon, Sun, Shield } from 'lucide-react'
-import { useSession } from 'next-auth/react'
+import { useSession, signOut } from 'next-auth/react'
 
 const Sidebar = ({ setActivePage }: { setActivePage: (page: string) => void }) => {
   const { data: session } = useSession()
@@ -31,6 +31,11 @@ const Sidebar = ({ setActivePage }: { setActivePage: (page: string) => void }) =
   // Fonction pour changer de page active
   const handleSetActivePage = (page: string) => {
     setActivePage(page)
+  }
+
+  // Fonction pour déconnecter l'utilisateur
+  const handleLogout = () => {
+    signOut({ callbackUrl: '/' }) // Redirection vers la page d'accueil après la déconnexion
   }
 
   return (
@@ -76,7 +81,7 @@ const Sidebar = ({ setActivePage }: { setActivePage: (page: string) => void }) =
             </span>
           </button>
           <button
-            onClick={() => console.log('Déconnexion')}
+            onClick={handleLogout}
             className="flex w-full items-center justify-center rounded-md p-2 hover:bg-gray-200 dark:hover:bg-gray-700"
           >
             <LogOut size={24} />
