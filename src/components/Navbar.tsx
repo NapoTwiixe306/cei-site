@@ -105,7 +105,7 @@ export default function Navbar() {
             <div className="hidden md:block relative" ref={dropdownRef}>
               <button
                 onClick={toggleDropdown}
-                className="flex items-center p-2 px-5 text-lg bg-black dark:bg-white font-bold text-white rounded-md cursor-pointer bg-customBlue dark:text-black"
+                className="flex items-center  text-lg  font-bold text-black rounded-md cursor-pointer bg-customBlue dark:text-white"
               >
                 Auth <FaChevronDown className="ml-2" />
               </button>
