@@ -3,11 +3,12 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import prisma from "./prisma";
 import { compare } from "bcrypt";
-import { JWT } from "next-auth/jwt"; // Importer le type JWT de next-auth
+import { JWT } from "next-auth/jwt";
 
-// Définir le type personnalisé pour le JWT avec un champ 'role'
+// Définir le type personnalisé pour le JWT avec un champ 'role' et 'name'
 interface CustomJWT extends JWT {
-  role?: string; // Rôle est optionnel, mais il sera présent dans notre cas
+  role?: string;
+  name?: string | null; // Accepter `null` si le nom est absent
 }
 
 export const authOptions: NextAuthOptions = {
@@ -38,27 +39,28 @@ export const authOptions: NextAuthOptions = {
           return null;
         }
 
+        // Retourner l'utilisateur avec son nom et rôle
         return {
           id: user.id.toString(),
           email: user.email,
-          role: user.role, // Inclure le rôle
+          role: user.role,
+          name: user.name, // Inclure le nom ici
         };
       },
     }),
   ],
   callbacks: {
     async jwt({ token, user }) {
-      // Si l'utilisateur est défini (lors de la connexion)
       if (user) {
-        // Ajouter le rôle au token personnalisé
-        (token as CustomJWT).role = user.role || 'user'; // Assigner 'user' par défaut si role est undefined
+        (token as CustomJWT).role = user.role || 'user';
+        (token as CustomJWT).name = user.name || null; // Permettre `null`
       }
       return token;
     },
     async session({ session, token }) {
-      // Ajouter le rôle à la session à partir du token
-      if (token && (token as CustomJWT).role) {
-        session.user.role = (token as CustomJWT).role || 'user'; // Assigner 'user' par défaut si role est undefined
+      if (token) {
+        session.user.role = (token as CustomJWT).role || 'user';
+        session.user.name = (token as CustomJWT).name || ''; // Utiliser une chaîne vide par défaut
       }
       return session;
     },

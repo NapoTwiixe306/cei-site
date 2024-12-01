@@ -5,7 +5,7 @@ import { hash } from "bcrypt";
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { email, password } = body;
+    const { email, password, name } = body; // Ajoutez `name` dans le body
 
     // Vérifier si l'email existe déjà
     const existingUserByEmail = await prisma.user.findUnique({
@@ -14,7 +14,7 @@ export async function POST(req: Request) {
     if (existingUserByEmail) {
       return NextResponse.json(
         { user: null, message: "User with this email already exists" },
-        { status: 409 },
+        { status: 409 }
       );
     }
 
@@ -25,17 +25,20 @@ export async function POST(req: Request) {
         email,
         password: hashedPassword,
         role: "USER", // Rôle par défaut
+        name, // Assurez-vous que le `name` est bien passé ici
       },
     });
 
     return NextResponse.json(
       { user: newUser, message: "User created successfully" },
-      { status: 201 },
+      { status: 201 }
     );
   } catch (error) {
+    console.error("Error during user creation:", error); // Loggez l'erreur complète ici
     return NextResponse.json(
       { message: "Something went wrong!" },
-      { status: 500 },
+      { status: 500 }
     );
   }
 }
+
