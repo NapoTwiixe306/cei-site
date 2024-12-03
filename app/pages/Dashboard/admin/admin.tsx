@@ -19,7 +19,7 @@ const AdminDashboard = () => {
     if (!session) {
       router.push("/auth/signin");
     } else if (session.user.role?.toLowerCase() !== "admin") {
-      router.push("/pages/Dashboard.user");
+      router.push("/pages/Dashboard/user");
     }
   }, [session, status, router]);
   

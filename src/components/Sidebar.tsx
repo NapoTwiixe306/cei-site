@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
-import { Home, Settings, Users, LogOut, Moon, Sun, Shield } from 'lucide-react'
+import { Home, Settings, Users, LogOut, Moon, Sun, Shield, Tickets } from 'lucide-react'
 import { useSession } from 'next-auth/react'
 import Link from 'next/link'
 const Sidebar = ({ setActivePage }: { setActivePage: (page: string) => void }) => {
@@ -55,12 +55,13 @@ const Sidebar = ({ setActivePage }: { setActivePage: (page: string) => void }) =
             
             {role === 'ADMIN' && (
               <>
+                <SidebarItem icon={<Tickets size={24} />} text="Gestion d'évenements" onClick={() => handleSetActivePage('event')} expanded={isExpanded} />
                 <SidebarItem icon={<Users size={24} />} text="Gestion des utilisateurs" onClick={() => handleSetActivePage('users')} expanded={isExpanded} />
                 <SidebarItem icon={<Shield size={24} />} text="Admin Panel" onClick={() => handleSetActivePage('admin')} expanded={isExpanded} />
               </>
             )}
 
-            {role === 'user' && (
+            {role === 'USER' && (
               <>
                 <SidebarItem icon={<Settings size={24} />} text="Paramètres" onClick={() => handleSetActivePage('settings')} expanded={isExpanded} />
               </>
