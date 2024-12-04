@@ -1,4 +1,3 @@
-// pages/api/events/[id].ts
 import type { NextApiRequest, NextApiResponse } from 'next';
 import prisma from "@/src/utils/prisma/index";
 
