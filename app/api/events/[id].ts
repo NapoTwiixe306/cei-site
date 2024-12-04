@@ -1,8 +1,14 @@
 import { NextResponse } from 'next/server';
 import prisma from "@/src/utils/prisma/index";
 
-export async function GET(req: Request, { params }: { params: { id: string } }) {
-  const { id } = params; // On récupère l'ID des params de la route
+// La fonction de traitement de la route GET
+export async function GET(req: Request) {
+  const url = new URL(req.url);  // Crée un objet URL à partir de la requête
+  const id = url.pathname.split('/').pop();  // Récupère le paramètre `id` à partir de l'URL
+  
+  if (!id) {
+    return NextResponse.json({ message: 'ID manquant dans l\'URL.' }, { status: 400 });
+  }
 
   try {
     const event = await prisma.event.findUnique({
