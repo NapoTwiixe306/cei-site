@@ -59,15 +59,15 @@ export default function GestionEvent() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
+  
     const formattedDate = new Date(date).toISOString();
-
+  
     const eventData = {
       title,
       description,
-      date: formattedDate,
+      date: formattedDate, 
     };
-
+  
     try {
       const response = await fetch('/api/events/create', {
         method: 'POST',
@@ -76,38 +76,18 @@ export default function GestionEvent() {
         },
         body: JSON.stringify(eventData),
       });
-
+  
       if (!response.ok) {
         throw new Error('Erreur lors de la création de l\'événement');
       }
-
+  
       const data = await response.json();
-      closeModal();
-      setEvents((prevEvents) => [...prevEvents, data]); // Ajouter l'événement créé à la liste
+      closeModal();  
     } catch (error) {
       console.error('Erreur lors de la soumission du formulaire:', error);
     }
   };
-
-  // Fonction de suppression
-  const handleDelete = async (id: number, e: React.MouseEvent) => {
-    e.stopPropagation(); // Empêche la propagation du clic à l'événement parent
-
-    try {
-      const response = await fetch(`/api/events/${id}`, {
-        method: 'DELETE',
-      });
-
-      if (!response.ok) {
-        throw new Error('Erreur lors de la suppression de l\'événement');
-      }
-
-      // Supprimer l'événement localement après la suppression en BDD
-      setEvents((prevEvents) => prevEvents.filter((event) => event.id !== id));
-    } catch (error) {
-      console.error('Erreur lors de la suppression de l\'événement:', error);
-    }
-  };
+  
 
   return (
     <>
@@ -121,6 +101,7 @@ export default function GestionEvent() {
             <Plus /> Ajouter un événement
           </button>
         </div>
+        
         <div className="flex flex-col gap-4">
           {isLoading ? (
             <p className="text-center text-gray-500">Chargement des événements...</p>
@@ -131,23 +112,13 @@ export default function GestionEvent() {
                 className="up w-full p-6 border-gray-500 rounded-md border-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700"
                 onClick={() => handleEventClick(event)}
               >
-                <div className="flex justify-between items-center">
-                  <div>
-                    <h2 className="text-xl font-semibold">{event.title}</h2>
-                    <p className="text-gray-500">{new Date(event.date).toLocaleDateString()}</p>
-                    <p className="text-gray-700 dark:text-gray-300">
-                      {event.description.length > 100
-                        ? `${event.description.substring(0, 100)}...`
-                        : event.description}
-                    </p>
-                  </div>
-                  <button
-                    onClick={(e) => handleDelete(event.id, e)}
-                    className="text-red-500 hover:text-red-700"
-                  >
-                    Supprimer
-                  </button>
-                </div>
+                <h2 className="text-xl font-semibold">{event.title}</h2>
+                <p className="text-gray-500">{new Date(event.date).toLocaleDateString()}</p>
+                <p className="text-gray-700 dark:text-gray-300">
+                  {event.description.length > 100
+                    ? `${event.description.substring(0, 100)}...`
+                    : event.description}
+                </p>
               </div>
             ))
           )}
