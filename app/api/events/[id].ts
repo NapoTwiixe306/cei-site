@@ -1,31 +1,26 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
+import { NextResponse } from 'next/server';
 import prisma from "@/src/utils/prisma/index";
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const { id } = req.query;
+export async function GET(req: Request, { params }: { params: { id: string } }) {
+  const { id } = params; // On récupère l'ID des params de la route
 
-  if (req.method === 'GET') {
-    try {
-      const event = await prisma.event.findUnique({
-        where: { id: Number(id) },
-        include: {
-          createdBy: {
-            select: { name: true },
-          },
+  try {
+    const event = await prisma.event.findUnique({
+      where: { id: Number(id) },
+      include: {
+        createdBy: {
+          select: { name: true },
         },
-      });
+      },
+    });
 
-      if (!event) {
-        return res.status(404).json({ message: 'Événement non trouvé.' });
-      }
-
-      res.status(200).json(event);
-    } catch (error) {
-      console.error('Error fetching event:', error);
-      res.status(500).json({ message: 'Une erreur est survenue.' });
+    if (!event) {
+      return NextResponse.json({ message: 'Événement non trouvé.' }, { status: 404 });
     }
-  } else {
-    res.setHeader('Allow', ['GET']);
-    res.status(405).end(`Method ${req.method} Not Allowed`);
+
+    return NextResponse.json(event);
+  } catch (error) {
+    console.error('Error fetching event:', error);
+    return NextResponse.json({ message: 'Une erreur est survenue.' }, { status: 500 });
   }
 }
