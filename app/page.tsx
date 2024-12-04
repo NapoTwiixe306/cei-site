@@ -68,12 +68,12 @@ export default function Home() {
             artificielle à HELMo.
           </p>
           <div className="flex flex-col justify-center items-center sm:flex-row gap-4 mt-6">
-            <Link href="/pages/event">
+            <Link href="/pages/Event">
               <button className="hero-button px-6 py-3 rounded-lg bg-blue-500 hover:bg-blue-700 transition">
                 Événements
               </button>
             </Link>
-            <Link href="/pages/tutoring">
+            <Link href="/pages/Tutorat">
               <button className="hero-button px-6 py-3 rounded-lg bg-blue-500 hover:bg-blue-700 transition">
                 Tutorat
               </button>

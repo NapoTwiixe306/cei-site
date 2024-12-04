@@ -10,11 +10,6 @@ const AdminDashboard = () => {
   const router = useRouter();
 
   useEffect(() => {
-    console.log("Status:", status);
-    console.log("Session data:", session);
-  }, [status, session]);
-  
-  useEffect(() => {
     if (status === "loading") return;
     if (!session) {
       router.push("/auth/signin");

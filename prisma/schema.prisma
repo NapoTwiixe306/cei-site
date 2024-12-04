@@ -15,6 +15,21 @@ model User {
   resetTokenExpiry DateTime?
   role             Role      @default(USER)
   name             String
+  events           Event[]   @relation("UserEvents")
+}
+
+model Event {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String
+  date        DateTime
+  imageUrl    String?
+  createdById Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  createdBy   User     @relation("UserEvents", fields: [createdById], references: [id])
+
+  @@index([createdById], map: "Event_createdById_fkey")
 }
 
 enum Role {
