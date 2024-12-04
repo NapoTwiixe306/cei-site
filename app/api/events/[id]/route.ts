@@ -1,9 +1,13 @@
-// app/api/events/[id]/route.ts
-import { NextResponse } from 'next/server';
-import prisma from '@/src/utils/prisma/index';
+import { NextRequest, NextResponse } from 'next/server';
+import prisma from "@/src/utils/prisma/index";
 
-export async function GET({ params }: { params: { id: string } }) {
-  const { id } = params;
+export async function GET(req: NextRequest) {
+  const url = new URL(req.url); // Crée un objet URL pour extraire les paramètres
+  const id = url.pathname.split('/').pop(); // Récupère l'ID de l'URL
+  
+  if (!id) {
+    return NextResponse.json({ message: 'ID manquant dans l\'URL.' }, { status: 400 });
+  }
 
   try {
     const event = await prisma.event.findUnique({
@@ -23,23 +27,5 @@ export async function GET({ params }: { params: { id: string } }) {
   } catch (error) {
     console.error('Error fetching event:', error);
     return NextResponse.json({ message: 'Une erreur est survenue.' }, { status: 500 });
-  }
-}
-
-export async function DELETE({ params }: { params: { id: string } }) {
-  const { id } = params;
-
-  try {
-    // Suppression de l'événement
-    const deletedEvent = await prisma.event.delete({
-      where: {
-        id: Number(id),
-      },
-    });
-
-    return NextResponse.json(deletedEvent);
-  } catch (error) {
-    console.error('Error deleting event:', error);
-    return NextResponse.json({ message: 'Erreur lors de la suppression de l\'événement.' }, { status: 500 });
   }
 }
