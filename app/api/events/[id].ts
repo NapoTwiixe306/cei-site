@@ -1,11 +1,9 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import prisma from "@/src/utils/prisma/index";
 
-// La fonction de traitement de la route GET
-export async function GET(req: Request) {
-  const url = new URL(req.url);  // Crée un objet URL à partir de la requête
-  const id = url.pathname.split('/').pop();  // Récupère le paramètre `id` à partir de l'URL
-  
+export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
+  const { id } = params;
+
   if (!id) {
     return NextResponse.json({ message: 'ID manquant dans l\'URL.' }, { status: 400 });
   }
