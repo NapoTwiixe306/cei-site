@@ -2,7 +2,6 @@ import { NextResponse } from 'next/server';
 import prisma from "@/src/utils/prisma/index";
 
 export async function GET() {
-  console.log("Fetching all events..."); // LOG: Récupération des événements
 
   try {
     const events = await prisma.event.findMany({
@@ -16,7 +15,6 @@ export async function GET() {
       },
     });
 
-    console.log("Fetched Events:", events); // LOG: Événements récupérés
 
     return NextResponse.json(events);
   } catch (error) {

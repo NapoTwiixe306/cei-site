@@ -8,7 +8,6 @@ export async function POST(req: NextRequest) {
   try {
     const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
 
-    console.log("Token:", token); // LOG: Token utilisateur
 
     if (!token) {
       console.error("Utilisateur non autorisé."); // LOG: Non autorisé
@@ -17,7 +16,6 @@ export async function POST(req: NextRequest) {
 
     const { title, description, date, imageUrl } = await req.json();
 
-    console.log("Request Data:", { title, description, date, imageUrl }); // LOG: Données reçues
 
     if (!title || !description || !date) {
       console.error("Données manquantes."); // LOG: Données incomplètes
@@ -34,7 +32,6 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    console.log("Created Event:", newEvent); // LOG: Événement créé
 
     return NextResponse.json(newEvent, { status: 201 });
   } catch (error) {
