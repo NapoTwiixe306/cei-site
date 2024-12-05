@@ -1,9 +1,9 @@
-// app/api/events/route.ts
 import { NextResponse } from 'next/server';
 import prisma from "@/src/utils/prisma/index";
 
-// Cette fonction gère les requêtes GET pour récupérer tous les événements
 export async function GET() {
+  console.log("Fetching all events..."); // LOG: Récupération des événements
+
   try {
     const events = await prisma.event.findMany({
       include: {
@@ -16,9 +16,11 @@ export async function GET() {
       },
     });
 
+    console.log("Fetched Events:", events); // LOG: Événements récupérés
+
     return NextResponse.json(events);
   } catch (error) {
-    console.error('Error fetching events:', error);
+    console.error('Error fetching events:', error); // LOG: Erreur serveur
     return NextResponse.json({ message: 'Une erreur est survenue.' }, { status: 500 });
   }
 }

@@ -18,13 +18,12 @@ export default function GestionEvent() {
   const [isLoading, setIsLoading] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
+  const [logs, setLogs] = useState<string[]>([]); // État pour stocker les logs
 
-  // Etats pour le formulaire
   const [title, setTitle] = useState<string>('');
   const [description, setDescription] = useState<string>('');
   const [date, setDate] = useState<string>('');
 
-  // Charger les événements au montage du composant
   useEffect(() => {
     async function fetchEvents() {
       try {
@@ -32,8 +31,10 @@ export default function GestionEvent() {
         if (!res.ok) throw new Error('Erreur de récupération des événements');
         const data = await res.json();
         setEvents(data);
+        addLog('Événements chargés avec succès.');
       } catch (error) {
-        console.error('Erreur lors du chargement des événements :', error);
+        addLog('Erreur lors du chargement des événements.');
+        console.error(error);
       } finally {
         setIsLoading(false);
       }
@@ -41,6 +42,11 @@ export default function GestionEvent() {
 
     fetchEvents();
   }, []);
+
+  function addLog(message: string) {
+    const timestamp = new Date().toLocaleTimeString();
+    setLogs((prevLogs) => [`[${timestamp}] ${message}`, ...prevLogs]);
+  }
 
   function handleClick() {
     setIsOpen(!isOpen);
@@ -55,19 +61,15 @@ export default function GestionEvent() {
 
   function handleEventClick(event: Event) {
     setSelectedEvent(event);
+    addLog(`Événement sélectionné : ${event.title}`);
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-  
+
     const formattedDate = new Date(date).toISOString();
-  
-    const eventData = {
-      title,
-      description,
-      date: formattedDate, 
-    };
-  
+    const eventData = { title, description, date: formattedDate };
+
     try {
       const response = await fetch('/api/events/create', {
         method: 'POST',
@@ -76,18 +78,20 @@ export default function GestionEvent() {
         },
         body: JSON.stringify(eventData),
       });
-  
+
       if (!response.ok) {
         throw new Error('Erreur lors de la création de l\'événement');
       }
-  
+
       const data = await response.json();
-      closeModal();  
+      setEvents((prev) => [...prev, data]);
+      addLog(`Événement créé : ${data.title}`);
+      closeModal();
     } catch (error) {
-      console.error('Erreur lors de la soumission du formulaire:', error);
+      addLog('Erreur lors de la création de l\'événement.');
+      console.error(error);
     }
   };
-  
 
   return (
     <>
@@ -101,7 +105,7 @@ export default function GestionEvent() {
             <Plus /> Ajouter un événement
           </button>
         </div>
-        
+
         <div className="flex flex-col gap-4">
           {isLoading ? (
             <p className="text-center text-gray-500">Chargement des événements...</p>
@@ -123,96 +127,23 @@ export default function GestionEvent() {
             ))
           )}
         </div>
-      </div>
 
-      {/* Modal pour ajouter un événement */}
-      {isOpen && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <form
-            onSubmit={handleSubmit}
-            className="bg-white dark:bg-gray-800 p-6 rounded-md shadow-lg w-1/3"
-          >
-            <h2 className="text-xl font-bold mb-4 text-black dark:text-white">Ajouter un événement</h2>
-            <div className="flex flex-col gap-3">
-              <div className="flex flex-col text-black dark:text-white gap-1">
-                <label htmlFor="title">Titre :</label>
-                <input
-                  type="text"
-                  id="title"
-                  name="title"
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                  placeholder="Le titre de l'événement"
-                  required
-                  className="py-2 px-3 text-black dark:text-white rounded-md border-black border-2"
-                />
-              </div>
-              <div className="flex flex-col text-black dark:text-white gap-1">
-                <label htmlFor="description">Description :</label>
-                <textarea
-                  id="description"
-                  name="description"
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                  rows={3}
-                  placeholder="Ajoutez une description"
-                  required
-                  className="rounded-md p-3 text-black dark:text-white border-black border-2"
-                ></textarea>
-              </div>
-              <div className="flex flex-col text-black dark:text-white gap-1">
-                <label htmlFor="date">Date :</label>
-                <input
-                  type="datetime-local"
-                  id="date"
-                  name="date"
-                  value={date}
-                  onChange={(e) => setDate(e.target.value)}
-                  required
-                  className="py-2 px-3 text-black dark:text-white rounded-md border-black border-2"
-                />
-              </div>
-            </div>
-            <div className="flex justify-end mt-4 gap-2">
-              <button
-                type="button"
-                onClick={closeModal}
-                className="px-4 py-2 bg-gray-700 text-white rounded-md hover:bg-gray-600"
-              >
-                Fermer
-              </button>
-              <button
-                type="submit"
-                className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
-              >
-                Ajouter
-              </button>
-            </div>
-          </form>
-        </div>
-      )}
-
-      {/* Modal pour afficher les détails d'un événement */}
-      {selectedEvent && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <div className="bg-white dark:bg-gray-800 p-6 rounded-md shadow-lg w-1/3">
-            <h2 className="text-xl font-bold mb-4 text-black dark:text-white">{selectedEvent.title}</h2>
-            <p className="text-gray-500 mb-2">
-              Date : {new Date(selectedEvent.date).toLocaleDateString()}
-            </p>
-            <p className="text-gray-700 dark:text-gray-300 mb-4">{selectedEvent.description}</p>
-            <p className="text-gray-500">Créé par : {selectedEvent.createdBy.name}</p>
-            <div className="flex justify-end mt-4">
-              <button
-                onClick={() => setSelectedEvent(null)}
-                className="px-4 py-2 bg-gray-700 text-white rounded-md hover:bg-gray-600"
-              >
-                Fermer
-              </button>
-            </div>
+        {/* Section des logs */}
+        <div className="mt-10 bg-gray-100 dark:bg-gray-800 p-4 rounded-md shadow-md">
+          <h2 className="text-lg font-bold text-black dark:text-white mb-3">Logs des actions</h2>
+          <div className="flex flex-col gap-2 max-h-40 overflow-y-auto">
+            {logs.length > 0 ? (
+              logs.map((log, index) => (
+                <p key={index} className="text-sm text-gray-600 dark:text-gray-400">
+                  {log}
+                </p>
+              ))
+            ) : (
+              <p className="text-gray-500">Aucune action enregistrée pour le moment.</p>
+            )}
           </div>
         </div>
-      )}
+      </div>
     </>
   );
 }
