@@ -1,4 +1,4 @@
-"use client";
+"use server";
 
 import { SessionProvider } from "next-auth/react";
 import DashboardContent from "./DashboardContent";
